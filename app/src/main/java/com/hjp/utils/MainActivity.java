@@ -2,6 +2,7 @@ package com.hjp.utils;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -42,5 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         banner = (Banner) findViewById(R.id.banner);
         img_icon = (ImageView) findViewById(R.id.img_icon);
+    }
+
+    public void onFlow(View view) {
+        FlowlayoutActivity.startAction(this);
     }
 }

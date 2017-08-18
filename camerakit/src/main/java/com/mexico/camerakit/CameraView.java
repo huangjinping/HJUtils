@@ -1,4 +1,4 @@
-package com.flurgle.camerakit;
+package com.mexico.camerakit;
 
 import android.Manifest;
 import android.app.Activity;
@@ -31,16 +31,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.flurgle.camerakit.CameraKit.Constants.FACING_BACK;
-import static com.flurgle.camerakit.CameraKit.Constants.FACING_FRONT;
-import static com.flurgle.camerakit.CameraKit.Constants.FLASH_AUTO;
-import static com.flurgle.camerakit.CameraKit.Constants.FLASH_OFF;
-import static com.flurgle.camerakit.CameraKit.Constants.FLASH_ON;
-import static com.flurgle.camerakit.CameraKit.Constants.FLASH_TORCH;
-import static com.flurgle.camerakit.CameraKit.Constants.METHOD_STANDARD;
-import static com.flurgle.camerakit.CameraKit.Constants.PERMISSIONS_LAZY;
-import static com.flurgle.camerakit.CameraKit.Constants.PERMISSIONS_PICTURE;
-import static com.flurgle.camerakit.CameraKit.Constants.PERMISSIONS_STRICT;
+import static com.mexico.camerakit.CameraKit.Constants.FACING_BACK;
+import static com.mexico.camerakit.CameraKit.Constants.FACING_FRONT;
+import static com.mexico.camerakit.CameraKit.Constants.FLASH_AUTO;
+import static com.mexico.camerakit.CameraKit.Constants.FLASH_OFF;
+import static com.mexico.camerakit.CameraKit.Constants.FLASH_ON;
+import static com.mexico.camerakit.CameraKit.Constants.FLASH_TORCH;
+import static com.mexico.camerakit.CameraKit.Constants.METHOD_STANDARD;
+import static com.mexico.camerakit.CameraKit.Constants.PERMISSIONS_LAZY;
+import static com.mexico.camerakit.CameraKit.Constants.PERMISSIONS_PICTURE;
+import static com.mexico.camerakit.CameraKit.Constants.PERMISSIONS_STRICT;
 
 /**
  * The CameraView implements the LifecycleObserver interface for ease of use. To take advantage of

@@ -8,3 +8,4 @@ git push -u origin master
 
 git remote add origin git@github.com:huangjinping/HJUtils.git
 git push -u origin master
+git remote rm origin

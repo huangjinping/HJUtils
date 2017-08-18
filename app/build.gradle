@@ -31,5 +31,4 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile project(':banner')
     compile project(':flowlayout-lib')
-    compile project(':camerakit')
 }

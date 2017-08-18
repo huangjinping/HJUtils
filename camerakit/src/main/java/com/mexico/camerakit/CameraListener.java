@@ -1,4 +1,4 @@
-package com.flurgle.camerakit;
+package com.mexico.camerakit;
 
 import android.graphics.YuvImage;
 

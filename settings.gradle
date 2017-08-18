@@ -1,1 +1,1 @@
-include ':app', ':banner', ':flowlayout-lib'
+include ':app', ':banner', ':flowlayout-lib', ':camerakit'

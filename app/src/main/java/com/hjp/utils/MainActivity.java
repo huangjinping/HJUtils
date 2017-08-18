@@ -47,5 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onFlow(View view) {
         FlowlayoutActivity.startAction(this);
+
     }
 }

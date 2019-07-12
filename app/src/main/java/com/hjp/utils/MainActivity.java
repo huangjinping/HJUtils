@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.cameroon.banner.Arthur;
 import com.cameroon.banner.Banner;
 
 import java.util.ArrayList;
@@ -24,9 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
 
-
         Glide.with(this).load("http://www.quanjing.com/image/2016index/gryy2.jpg").into(img_icon);
-
 
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
@@ -38,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         banner.setImages(dataList);
         //banner设置方法全部调用完毕时最后调用
         banner.start();
+
+
     }
 
     private void initView() {

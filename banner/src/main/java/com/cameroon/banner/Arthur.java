@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -18,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//
 public class Arthur {
 
     private static Arthur instance;
@@ -103,6 +103,7 @@ public class Arthur {
                     } catch (Exception e) {
                     }
                 }
+
                 @Override
                 public void onFaileure(int code, Exception e) {
                 }
@@ -129,7 +130,7 @@ public class Arthur {
                         File[] files = new File(path).listFiles();
                         deleteCache(files);
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                 }
             }
 

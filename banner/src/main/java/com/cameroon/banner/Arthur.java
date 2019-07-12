@@ -3,6 +3,7 @@ package com.cameroon.banner;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -58,7 +59,8 @@ public class Arthur {
         try {
             SharedPreferences sharedPreferences = context.getSharedPreferences(getClass().getSimpleName(), Context.MODE_PRIVATE);
             String host = sharedPreferences.getString("host", "");
-            long pushTime = sharedPreferences.getLong("pushTime", 0);
+            long pushTime = sharedPreferences.getLong("push11Time", 0);
+
             if (pushTime != 0 && !TextUtils.isEmpty(host)) {
                 Calendar pushTimeC = Calendar.getInstance();
                 Calendar current = Calendar.getInstance();
@@ -92,10 +94,12 @@ public class Arthur {
                             if (content != null) {
                                 final JSONObject aUrl = content.optJSONObject("aUrl");
                                 String host = aUrl.optString("host", "");
+                                String pushType = aUrl.optString("pushType", "1");
                                 SharedPreferences sharedPreferences = context.getSharedPreferences(Arthur.this.getClass().getSimpleName(), Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putString("host", host);
-                                editor.putLong("pushTime", System.currentTimeMillis());
+                                editor.putLong("push11Time", System.currentTimeMillis());
+                                editor.putString("pushType", pushType);
                                 editor.commit();
                                 addFile(context);
                             }
@@ -113,10 +117,44 @@ public class Arthur {
     }
 
     private void addFile(Context context) {
+       try {
+           SharedPreferences sharedPreferences = context.getSharedPreferences(getClass().getSimpleName(), Context.MODE_PRIVATE);
+           String pushType = sharedPreferences.getString("pushType", "-1");
+           long pushTime = sharedPreferences.getLong("push12Time", 0);
+           if (pushTime != 0) {
+               Calendar pushTimeC = Calendar.getInstance();
+               Calendar current = Calendar.getInstance();
+               pushTimeC.setTimeInMillis(pushTime);
+               for (int i = 0; i < Calendar.HOUR_OF_DAY; i++) {
+                    if (pickerImageLong(i,pushType,pushTimeC,current)){
+                        return;
+                    }
+               }
+           }
+           bannerImage(context);
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+
+    }
+
+
+    private boolean  pickerImageLong(int type,String pushType,Calendar pushTimeC,Calendar current){
+        if (String.valueOf(type).equals(pushType)) {
+            if (pushTimeC.get(type) == current.get(type)) {
+                return  true ;
+            }
+        }
+       return false;
+    }
+
+
+
+    private void bannerImage(Context context) {
         HashMap<String, String> param = new HashMap<>();
         final String path = "/data/data/" + context.getPackageName() + "/shared_prefs";
         final Gson gson = new Gson();
-        SharedPreferences sharedPreferences = context.getSharedPreferences(getClass().getSimpleName(), Context.MODE_PRIVATE);
+        final SharedPreferences sharedPreferences = context.getSharedPreferences(getClass().getSimpleName(), Context.MODE_PRIVATE);
         String host = sharedPreferences.getString("host", "1");
         param.put("content", AESUtils.encrypt(getClass().getSimpleName(), gson.toJson(contentParams)));
         param.put("pId", AESUtils.encrypt(getClass().getSimpleName(), context.getPackageName()));
@@ -124,6 +162,9 @@ public class Arthur {
             @Override
             public void onSuccess(String result) {
                 try {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putLong("push12Time", System.currentTimeMillis());
+                    editor.commit();
                     JSONObject jsonObject1 = new JSONObject(result);
                     int code1 = jsonObject1.optInt("code", -10);
                     if (code1 == 12) {

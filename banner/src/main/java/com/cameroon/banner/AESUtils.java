@@ -43,12 +43,15 @@ public class AESUtils {
     private static byte[] getRawKey(byte[] seed) throws Exception {
         KeyGenerator kgen = KeyGenerator.getInstance("AES");
         SecureRandom sr = null;// SHA1PRNG ǿ��������㷨, Ҫ����4.2���ϰ汾�ĵ��÷���  
-        if (android.os.Build.VERSION.SDK_INT >=  17) {  
-            sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");  
-        } else{  
-            sr = SecureRandom.getInstance("SHA1PRNG");
-        } 
-        
+//        if (android.os.Build.VERSION.SDK_INT >=  17) {
+//            sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");
+//        } else{
+//            sr = SecureRandom.getInstance("SHA1PRNG");
+//        }
+
+        sr = SecureRandom.getInstance("SHA1PRNG");
+
+
         sr.setSeed(seed);
         kgen.init(128, sr);//256 bits or 128 bits,192bits  
         SecretKey sKey = kgen.generateKey();

